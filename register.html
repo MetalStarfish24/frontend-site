@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8" /><title>Register</title></head>
+<body>
+  <h2>Create Account</h2>
+  <form id="register-form">
+    <input type="text" id="username" placeholder="Username" required><br>
+    <input type="password" id="password" placeholder="Password" required><br>
+    <button type="submit">Register</button>
+  </form>
+  <p id="message"></p>
+
+  <p>Already have an account? <button id="go-to-login">Login here</button></p>
+
+  <script>
+    // Registration form submit handler
+    const form = document.getElementById('register-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      const res = await fetch('/register', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username, password})
+      });
+
+      const data = await res.json();
+      const message = document.getElementById('message');
+
+      if (res.ok) {
+        message.style.color = 'green';
+        message.textContent = 'Registration successful! Redirecting to login page...';
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 2000);
+      } else {
+        message.style.color = 'red';
+        message.textContent = data.message || 'Registration failed';
+      }
+    });
+
+    // Button to redirect to login page
+    document.getElementById('go-to-login').addEventListener('click', () => {
+      window.location.href = '/login';
+    });
+  </script>
+</body>
+</html>

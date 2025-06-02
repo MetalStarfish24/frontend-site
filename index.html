@@ -22,9 +22,20 @@
       width: fit-content;
       cursor: pointer;
     }
+
+    #logout-button {
+      float: right;
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
+  <button id="logout-button">Logout</button>
   <h1>Drink Manager</h1>
 
   <!-- Status message banner -->
@@ -192,6 +203,15 @@
 
       renderDrinks();
     }
+
+    document.getElementById('logout-button').addEventListener('click', async () => {
+      const res = await fetch('/logout', { method: 'POST' });
+      if (res.ok) {
+        window.location.href = '/login';
+      } else {
+        alert('Logout failed.');
+      }
+    });
 
     window.onload = fetchDrinks;
   </script>
